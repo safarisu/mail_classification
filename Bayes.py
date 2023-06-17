@@ -2,17 +2,19 @@ import pandas as pd
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.naive_bayes import MultinomialNB
 from sklearn.model_selection import train_test_split
-from sklearn.metrics import accuracy_score, classification_report
+from sklearn.metrics import accuracy_score, classification_report, confusion_matrix
+import seaborn as sns
+import matplotlib.pyplot as plt
 
 # Wczytanie danych z pliku CSV
-data = pd.read_csv("C:/Users/acer/Desktop/spam_assassin.csv")
+data = pd.read_csv("spam_assassin.csv")
 
 # Podział danych na cechy (X) i etykiety (y)
 X = data["text"]
 y = data["target"]
 
 # Podział danych na zbiór treningowy i testowy
-X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2)
 
 # Przygotowanie cech za pomocą wektoryzacji TF-IDF
 vectorizer = TfidfVectorizer()
@@ -34,3 +36,14 @@ print("Dokładność modelu: {:.2f}%".format(accuracy * 100))
 classification_rep = classification_report(y_test, y_pred)
 print("Raport klasyfikacji:")
 print(classification_rep)
+
+# Generowanie macierzy pomyłek
+cm = confusion_matrix(y_test, y_pred)
+
+# Tworzenie heatmapy macierzy pomyłek
+plt.figure(figsize=(8, 6))
+sns.heatmap(cm, annot=True, fmt='d')
+plt.title('Macierz Pomyłek')
+plt.xlabel('Predykowana etykieta')
+plt.ylabel('Rzeczywista etykieta')
+plt.show()

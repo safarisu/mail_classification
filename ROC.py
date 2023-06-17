@@ -41,3 +41,5 @@ plt.ylabel('Odsetek prawdziwie pozytywnych')
 plt.title('Krzywa ROC')
 plt.legend(loc="lower right")
 plt.show()
+
+
